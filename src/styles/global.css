@@ -227,6 +227,21 @@ img {
   color: var(--ink-4);
 }
 
+.callout {
+  margin: 1.2rem 0 2rem;
+  padding: 1rem 1.2rem;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--ink);
+  border-radius: var(--r-md);
+  color: var(--ink-2);
+  font-size: 0.96rem;
+}
+
+.callout strong {
+  color: var(--ink);
+}
+
 .kbd {
   font-family: var(--font-mono);
   font-size: 0.78rem;

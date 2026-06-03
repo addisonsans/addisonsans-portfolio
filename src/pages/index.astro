@@ -30,6 +30,10 @@ const publications = research.flatMap((r) =>
       <div class="hero-text">
         <p class="eyebrow">Data Scientist · ML Engineer</p>
         <h1>Addison Sans</h1>
+        <p class="availability">
+          <span class="dot" aria-hidden="true"></span>
+          Available for contract work — remote or hybrid
+        </p>
         <p class="lede">
           I build AI and data pipelines that turn messy, high-stakes
           data into clean, usable systems. Background spanning
@@ -41,8 +45,10 @@ const publications = research.flatMap((r) =>
           requirements are unclear, and the output still has to be right.
         </p>
         <div class="cta">
-          <a class="btn" href="/work/">See the work</a>
-          <a class="btn ghost" href="/about/">About</a>
+          <a class="btn" href="mailto:addisonsans20@gmail.com?subject=Project%20inquiry"
+            >Get in touch</a
+          >
+          <a class="btn ghost" href="/work/">See the work</a>
         </div>
       </div>
       <div class="hero-photo">
@@ -129,7 +135,40 @@ const publications = research.flatMap((r) =>
     align-items: start;
   }
   .hero-text h1 {
-    margin: 0 0 1.2rem;
+    margin: 0 0 0.6rem;
+  }
+  .availability {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1.5rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink-2);
+    letter-spacing: -0.005em;
+  }
+  .availability .dot {
+    width: 7px;
+    height: 7px;
+    background: #16a34a;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.35);
+    }
+    70% {
+      box-shadow: 0 0 0 6px rgba(22, 163, 74, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+    }
   }
   .hero-text .lede {
     margin-bottom: 1rem;
