@@ -1,0 +1,314 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects", ({ data }) => !data.draft))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order || b.data.year - a.data.year)
+  .slice(0, 4);
+
+const research = (await getCollection("research", ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const publications = research.flatMap((r) =>
+  r.data.publications.map((pub) => ({
+    citation: pub.citation,
+    url: pub.url,
+    source: r.data.affiliation || r.data.title,
+    sourceSlug: r.slug,
+  })),
+);
+---
+
+<BaseLayout
+  title="Addison Sans"
+  description="Addison Sans — Data Scientist & ML Engineer. AI automation, LLM pipelines, and data systems."
+  wide
+>
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow">Data Scientist · ML Engineer</p>
+        <h1>Addison Sans</h1>
+        <p class="lede">
+          I build AI and data pipelines that turn messy, high-stakes
+          data into clean, usable systems. Background spanning
+          neuroscience research, industry data science, and government
+          regulatory data.
+        </p>
+        <p class="lede sub">
+          Comfortable in environments where the data is messy, the
+          requirements are unclear, and the output still has to be right.
+        </p>
+        <div class="cta">
+          <a class="btn" href="/work/">See the work</a>
+          <a class="btn ghost" href="/about/">About</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img
+          src="/headshot.jpg"
+          alt="Portrait of Addison Sans"
+          width="320"
+          height="400"
+          loading="eager"
+        />
+      </div>
+    </div>
+  </section>
+
+  {
+    projects.length > 0 && (
+      <section class="selected">
+        <div class="section-head">
+          <h2>Selected projects</h2>
+          <a class="more" href="/projects/">All projects →</a>
+        </div>
+        <ul class="list">
+          {projects.map((p) => (
+            <li>
+              <a href={`/projects/${p.slug}/`}>
+                <div class="row">
+                  <span class="title">{p.data.title}</span>
+                  <span class="year">{p.data.year}</span>
+                </div>
+                <p class="summary">{p.data.summary}</p>
+                {p.data.stack.length > 0 && (
+                  <p class="stack">{p.data.stack.join(" · ")}</p>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    publications.length > 0 && (
+      <section class="selected pubs">
+        <div class="section-head">
+          <h2>Publications</h2>
+          <a class="more" href="/research/">Research →</a>
+        </div>
+        <p class="lede pubs-lede">
+          Co-authored peer-reviewed work from my time in neuroscience
+          research.
+        </p>
+        <ul class="pub-list">
+          {publications.map((pub) => (
+            <li>
+              <p class="citation">
+                {pub.url ? (
+                  <a href={pub.url} rel="noopener" target="_blank">
+                    {pub.citation}
+                  </a>
+                ) : (
+                  pub.citation
+                )}
+              </p>
+              <p class="affiliation">
+                <a href={`/research/${pub.sourceSlug}/`}>{pub.source}</a>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 1rem 0 4rem;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .hero-text h1 {
+    margin: 0 0 1.2rem;
+  }
+  .hero-text .lede {
+    margin-bottom: 1rem;
+  }
+  .hero-text .lede.sub {
+    color: var(--ink-4);
+  }
+  .hero-photo img {
+    width: 220px;
+    height: 275px;
+    object-fit: cover;
+    border-radius: var(--r-md);
+    border: 1px solid var(--line);
+    filter: grayscale(0.05);
+  }
+  .cta {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: var(--r-md);
+    background: var(--ink);
+    color: var(--bg);
+    border: 1px solid var(--ink);
+    transition: opacity 120ms ease, transform 120ms ease;
+  }
+  .btn:hover {
+    opacity: 0.88;
+    color: var(--bg);
+  }
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--line-strong);
+  }
+  .btn.ghost:hover {
+    background: var(--bg-soft);
+    color: var(--ink);
+  }
+
+  .selected {
+    border-top: 1px solid var(--line);
+    padding-top: 3rem;
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  .section-head h2 {
+    margin: 0;
+  }
+  .more {
+    font-size: 0.85rem;
+    color: var(--ink-3);
+    border-bottom: 0;
+    font-weight: 500;
+  }
+  .more:hover {
+    color: var(--ink);
+  }
+
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .list li {
+    border-top: 1px solid var(--line);
+  }
+  .list li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  .list a {
+    display: block;
+    padding: 1.2rem 0;
+    border-bottom: 0;
+    color: inherit;
+    transition: background 120ms ease;
+  }
+  .list a:hover {
+    background: var(--bg-elev);
+  }
+  .list a:hover .title {
+    color: var(--ink-3);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .title {
+    font-weight: 600;
+    font-size: 1.02rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .year {
+    font-size: 0.82rem;
+    color: var(--ink-4);
+    font-variant-numeric: tabular-nums;
+  }
+  .summary {
+    margin: 0.3rem 0 0;
+    color: var(--ink-3);
+    font-size: 0.95rem;
+  }
+  .stack {
+    margin: 0.35rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-4);
+  }
+
+  .pubs {
+    margin-top: 3.5rem;
+  }
+  .pubs-lede {
+    margin: 0 0 1.5rem;
+    font-size: 1rem;
+  }
+  .pub-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .pub-list li {
+    border-top: 1px solid var(--line);
+    padding: 1.1rem 0;
+  }
+  .pub-list li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  .citation {
+    margin: 0 0 0.3rem;
+    color: var(--ink);
+    font-size: 0.97rem;
+    line-height: 1.5;
+  }
+  .citation a {
+    color: var(--ink);
+    border-bottom: 0;
+  }
+  .citation a:hover {
+    color: var(--ink-3);
+  }
+  .affiliation {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--ink-4);
+  }
+  .affiliation a {
+    color: var(--ink-4);
+    border-bottom: 0;
+  }
+  .affiliation a:hover {
+    color: var(--ink);
+  }
+
+  @media (max-width: 720px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-photo {
+      order: -1;
+    }
+    .hero-photo img {
+      width: 140px;
+      height: 175px;
+    }
+  }
+</style>

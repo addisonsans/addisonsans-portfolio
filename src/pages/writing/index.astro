@@ -1,0 +1,98 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const entries = (await getCollection("writing", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const fmt = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+<BaseLayout
+  title="Writing"
+  description="Notes, essays, and the occasional longer piece."
+>
+  <p class="eyebrow">Writing</p>
+  <h1>Writing</h1>
+  <p class="lede">
+    Notes and essays — usually about applied ML, the gap between research and
+    production, or whatever I was thinking about that week.
+  </p>
+
+  {
+    entries.length === 0 ? (
+      <p class="empty">
+        Nothing here yet — add a markdown file under{" "}
+        <code>src/content/writing/</code>.
+      </p>
+    ) : (
+      <ul class="list">
+        {entries.map((e) => (
+          <li>
+            <a href={`/writing/${e.slug}/`}>
+              <div class="row">
+                <span class="title">{e.data.title}</span>
+                <time datetime={e.data.date.toISOString()} class="date">
+                  {fmt.format(e.data.date)}
+                </time>
+              </div>
+              <p class="summary">{e.data.summary}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+  }
+  .list li {
+    border-bottom: 1px solid var(--rule);
+  }
+  .list li:first-child {
+    border-top: 1px solid var(--rule);
+  }
+  .list li a {
+    display: block;
+    padding: 1.4rem 0;
+    text-decoration: none;
+    color: inherit;
+  }
+  .list li a:hover .title {
+    color: var(--accent);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .date {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+  }
+  .summary {
+    margin: 0.4rem 0 0;
+    color: var(--ink-soft);
+  }
+  .empty {
+    color: var(--ink-soft);
+    padding: 2rem 0;
+  }
+</style>

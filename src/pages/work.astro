@@ -1,0 +1,179 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+
+interface Role {
+  org: string;
+  title: string;
+  location?: string;
+  start: string;
+  end: string;
+  description: string;
+  highlights?: string[];
+}
+
+const roles: Role[] = [
+  {
+    org: "State of Florida — Construction Industry Licensing Board",
+    title: "Senior Data Analyst",
+    location: "Contract · Remote",
+    start: "Jan 2026",
+    end: "Present",
+    description:
+      "Built an AI automation system for the Florida Construction Industry Licensing Board — a state regulatory body whose members are appointed by the Governor — replacing a manual, paper-based document review process used in official licensing proceedings.",
+    highlights: [
+      "Pipeline that ingests hundreds of pages of case documents, extracts the relevant data, and generates clean, structured summaries and per-case briefings — substantially streamlining work previously done entirely by hand.",
+      "Normalized database schema with crash-resumable processing and domain-specific validation logic for compliance, criminal history, credit, and insurance flags.",
+      "Cost-optimized document processing that routes between native text extraction and vision models depending on document type.",
+      "Now maintain and extend the system on a part-time contract basis.",
+    ],
+  },
+  {
+    org: "Kiva Brands, Inc.",
+    title: "Data Scientist",
+    location: "Contract · Remote",
+    start: "Mar 2024",
+    end: "Dec 2024",
+    description:
+      "Analyzed historical and dynamic company data to inform sales strategy for upcoming product launches and product-catalogue optimization.",
+    highlights: [
+      "Applied statistical modeling and machine learning to surface actionable patterns for business decision-making.",
+    ],
+  },
+  {
+    org: "Perception, Attention & Consciousness Lab — University of Florida",
+    title: "Lab Manager",
+    location: "On-site",
+    start: "Jul 2020",
+    end: "Nov 2022",
+    description:
+      "Lab manager for a university neuroscience research lab — helped build out research infrastructure, data systems, and operational workflows under the lab's principal investigator.",
+    highlights: [
+      "Managed experimental protocols and coordinated research personnel across concurrent studies in a high-rigor academic environment.",
+      "Contributed to peer-reviewed research published in Multisensory Research (2023).",
+    ],
+  },
+  {
+    org: "GSU Neurophysics Lab",
+    title: "Research Assistant",
+    location: "Atlanta, GA",
+    start: "Aug 2019",
+    end: "Jul 2020",
+    description:
+      "Conducted fMRI and EEG data collection and analysis.",
+    highlights: [
+      "Developed novel MATLAB-based computational techniques for interpreting neuroimaging time-series data.",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Work"
+  description="Professional experience — current and previous roles."
+>
+  <p class="eyebrow">Work</p>
+  <h1>Experience</h1>
+
+  <p class="lede">
+    The professional timeline. For deeper write-ups of specific things
+    I've built, see <a href="/projects/">projects</a> and <a
+      href="/research/">research</a
+    >.
+  </p>
+
+  <ol class="timeline">
+    {
+      roles.map((r) => (
+        <li>
+          <div class="head">
+            <div class="left">
+              <h2>{r.title}</h2>
+              <p class="org">
+                {r.org}
+                {r.location && <span class="loc"> · {r.location}</span>}
+              </p>
+            </div>
+            <p class="dates">
+              <span>{r.start}</span>
+              <span class="dash"> – </span>
+              <span>{r.end}</span>
+            </p>
+          </div>
+          <p class="desc">{r.description}</p>
+          {r.highlights && (
+            <ul>
+              {r.highlights.map((h) => (
+                <li>{h}</li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+
+  <hr />
+  <p class="meta">
+    A full résumé is available on request — <a
+      href="mailto:addisonsans20@gmail.com">email me</a
+    >.
+  </p>
+</BaseLayout>
+
+<style>
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+  }
+  .timeline > li {
+    border-top: 1px solid var(--line);
+    padding: 1.8rem 0;
+  }
+  .timeline > li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .left {
+    flex: 1;
+    min-width: 0;
+  }
+  .head h2 {
+    margin: 0;
+    font-size: 1.08rem;
+    letter-spacing: -0.015em;
+  }
+  .org {
+    margin: 0.2rem 0 0;
+    color: var(--ink-3);
+    font-size: 0.93rem;
+  }
+  .loc {
+    color: var(--ink-4);
+  }
+  .dates {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--ink-4);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .dash {
+    margin: 0 0.25em;
+  }
+  .desc {
+    margin: 1rem 0 0.6rem;
+    color: var(--ink-2);
+  }
+  .timeline ul {
+    margin: 0.4rem 0 0;
+    color: var(--ink-3);
+    font-size: 0.95rem;
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const entries = (await getCollection("research", ({ data }) => !data.draft))
+  .sort(
+    (a, b) =>
+      a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
+  );
+---
+
+<BaseLayout
+  title="Research"
+  description="Research history — labs I've worked in, projects I contributed to, and adjacent writing."
+>
+  <p class="eyebrow">Research</p>
+  <h1>Research</h1>
+  <p class="lede">
+    My research history. Most of this work happened at the University of
+    Colorado Boulder; some threads I still pull on.
+  </p>
+
+  {
+    entries.length === 0 ? (
+      <p class="empty">
+        Nothing here yet — add a markdown file under{" "}
+        <code>src/content/research/</code>.
+      </p>
+    ) : (
+      <ul class="list">
+        {entries.map((e) => (
+          <li>
+            <a href={`/research/${e.slug}/`}>
+              <div class="row">
+                <span class="title">{e.data.title}</span>
+                {e.data.years && <span class="years">{e.data.years}</span>}
+              </div>
+              {e.data.affiliation && (
+                <p class="aff">
+                  {e.data.affiliation}
+                  {e.data.role && <span> · {e.data.role}</span>}
+                </p>
+              )}
+              <p class="summary">{e.data.summary}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+  }
+  .list li {
+    border-bottom: 1px solid var(--rule);
+  }
+  .list li:first-child {
+    border-top: 1px solid var(--rule);
+  }
+  .list li a {
+    display: block;
+    padding: 1.4rem 0;
+    text-decoration: none;
+    color: inherit;
+  }
+  .list li a:hover .title {
+    color: var(--accent);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .title {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .years {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+  }
+  .aff {
+    margin: 0.25rem 0 0;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .summary {
+    margin: 0.5rem 0 0;
+    color: var(--ink-soft);
+  }
+  .empty {
+    color: var(--ink-soft);
+    padding: 2rem 0;
+  }
+</style>

@@ -1,0 +1,105 @@
+---
+const currentPath = Astro.url.pathname;
+const items = [
+  { href: "/", label: "Home" },
+  { href: "/about/", label: "About" },
+  { href: "/work/", label: "Work" },
+  { href: "/projects/", label: "Projects" },
+  { href: "/research/", label: "Research" },
+  { href: "/writing/", label: "Writing" },
+  { href: "/contact/", label: "Contact" },
+];
+
+function isActive(href: string): boolean {
+  if (href === "/") return currentPath === "/";
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="/">Addison Sans</a>
+    <nav aria-label="Primary">
+      <ul>
+        {
+          items.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={[{ active: isActive(item.href) }]}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in oklab, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .inner {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0.95rem var(--gutter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .brand {
+    font-weight: 600;
+    font-size: 0.98rem;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    border-bottom: 0;
+  }
+  .brand:hover {
+    color: var(--ink-3);
+  }
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.4rem;
+    flex-wrap: wrap;
+  }
+  nav li {
+    margin: 0;
+  }
+  nav a {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink-4);
+    border-bottom: 0;
+    transition: color 120ms ease;
+  }
+  nav a:hover {
+    color: var(--ink);
+  }
+  nav a.active {
+    color: var(--ink);
+  }
+
+  @media (max-width: 640px) {
+    nav ul {
+      gap: 1rem;
+    }
+    nav a {
+      font-size: 0.84rem;
+    }
+  }
+</style>

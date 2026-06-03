@@ -1,0 +1,110 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("research", ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"research">;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { data } = entry;
+---
+
+<BaseLayout title={data.title} description={data.summary}>
+  <article class="prose">
+    <p class="eyebrow">Research</p>
+    <h1>{data.title}</h1>
+    <p class="lede">{data.summary}</p>
+
+    <dl class="meta-grid">
+      {data.affiliation && (
+        <>
+          <dt>Affiliation</dt>
+          <dd>{data.affiliation}</dd>
+        </>
+      )}
+      {data.role && (
+        <>
+          <dt>Role</dt>
+          <dd>{data.role}</dd>
+        </>
+      )}
+      {data.years && (
+        <>
+          <dt>Years</dt>
+          <dd>{data.years}</dd>
+        </>
+      )}
+      {data.collaborators.length > 0 && (
+        <>
+          <dt>With</dt>
+          <dd>{data.collaborators.join(", ")}</dd>
+        </>
+      )}
+    </dl>
+
+    <hr />
+
+    <Content />
+
+    {
+      data.publications.length > 0 && (
+        <section class="pubs">
+          <h2>Publications & outputs</h2>
+          <ul>
+            {data.publications.map((pub) => (
+              <li>
+                {pub.url ? (
+                  <a href={pub.url} rel="noopener" target="_blank">
+                    {pub.citation}
+                  </a>
+                ) : (
+                  pub.citation
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <hr />
+    <p class="meta">
+      <a href="/research/">← All research</a>
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .meta-grid {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.5rem 1.5rem;
+    margin: 2rem 0 0;
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+  }
+  .meta-grid dt {
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    padding-top: 0.15em;
+  }
+  .meta-grid dd {
+    margin: 0;
+    color: var(--ink-soft);
+  }
+  .pubs {
+    margin-top: 2.5rem;
+  }
+</style>

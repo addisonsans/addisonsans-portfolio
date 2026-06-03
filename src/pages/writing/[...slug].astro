@@ -1,0 +1,43 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("writing", ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"writing">;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { data } = entry;
+
+const fmt = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<BaseLayout title={data.title} description={data.summary}>
+  <article class="prose">
+    <p class="eyebrow">Essay · <time datetime={data.date.toISOString()}>{fmt.format(data.date)}</time></p>
+    <h1>{data.title}</h1>
+    <p class="lede">{data.summary}</p>
+
+    <hr />
+
+    <Content />
+
+    <hr />
+    <p class="meta">
+      <a href="/writing/">← All writing</a>
+    </p>
+  </article>
+</BaseLayout>

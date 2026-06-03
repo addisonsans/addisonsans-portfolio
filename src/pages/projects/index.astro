@@ -1,0 +1,130 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects", ({ data }) => !data.draft))
+  .sort(
+    (a, b) =>
+      b.data.year - a.data.year ||
+      a.data.order - b.data.order ||
+      a.data.title.localeCompare(b.data.title),
+  );
+
+const grouped = projects.reduce<Record<number, typeof projects>>(
+  (acc, p) => {
+    (acc[p.data.year] ||= []).push(p);
+    return acc;
+  },
+  {},
+);
+const years = Object.keys(grouped)
+  .map(Number)
+  .sort((a, b) => b - a);
+---
+
+<BaseLayout
+  title="Projects"
+  description="Selected coding and data projects — production work, research-adjacent experiments, and tools I built for myself."
+>
+  <p class="eyebrow">Projects</p>
+  <h1>Projects</h1>
+
+  <p class="lede">
+    A mix of production work, research-adjacent experiments, and tools I built
+    because I wanted to use them. Roughly reverse-chronological.
+  </p>
+
+  {
+    projects.length === 0 ? (
+      <p class="empty">
+        No projects yet — drop a markdown file into{" "}
+        <code>src/content/projects/</code> to add one.
+      </p>
+    ) : (
+      years.map((year) => (
+        <section class="year-block">
+          <h2>{year}</h2>
+          <ul class="list">
+            {grouped[year].map((p) => (
+              <li>
+                <a href={`/projects/${p.slug}/`}>
+                  <div class="row">
+                    <span class="title">{p.data.title}</span>
+                    {p.data.role && <span class="role">{p.data.role}</span>}
+                  </div>
+                  <p class="summary">{p.data.summary}</p>
+                  {p.data.stack.length > 0 && (
+                    <p class="stack">{p.data.stack.join(" · ")}</p>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    )
+  }
+</BaseLayout>
+
+<style>
+  .year-block {
+    margin-top: 2.5rem;
+  }
+  .year-block h2 {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin: 0 0 0.5rem;
+    font-weight: 500;
+  }
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .list li {
+    border-bottom: 1px solid var(--rule);
+  }
+  .list li a {
+    display: block;
+    padding: 1.2rem 0;
+    text-decoration: none;
+    color: inherit;
+  }
+  .list li a:hover .title {
+    color: var(--accent);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .role {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+  }
+  .summary {
+    margin: 0.35rem 0 0;
+    color: var(--ink-soft);
+  }
+  .stack {
+    margin: 0.35rem 0 0;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+  }
+  .empty {
+    color: var(--ink-soft);
+    padding: 2rem 0;
+  }
+</style>

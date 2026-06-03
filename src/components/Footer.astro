@@ -1,0 +1,52 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="inner">
+    <span class="copy">© {year} Addison Sans</span>
+    <nav class="links">
+      <a href="mailto:addisonsans20@gmail.com">Email</a>
+      <a
+        href="https://www.linkedin.com/in/addison-sans/"
+        rel="me noopener"
+        target="_blank">LinkedIn</a
+      >
+      <a href="https://github.com/addisonsans" rel="me noopener" target="_blank">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding: 1.6rem var(--gutter) 2rem;
+    margin-top: 4rem;
+  }
+  .inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: var(--ink-4);
+  }
+  .copy {
+    color: var(--ink-4);
+  }
+  .links {
+    display: flex;
+    gap: 1.4rem;
+  }
+  .links a {
+    color: var(--ink-3);
+    border-bottom: 0;
+    font-weight: 500;
+  }
+  .links a:hover {
+    color: var(--ink);
+  }
+</style>

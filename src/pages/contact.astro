@@ -1,0 +1,73 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Contact"
+  description="How to get in touch — email, LinkedIn, GitHub."
+>
+  <article class="prose">
+    <p class="eyebrow">Contact</p>
+    <h1>Get in touch</h1>
+    <p class="lede">
+      Easiest way to reach me is email. I read everything and reply to most
+      things within a few days.
+    </p>
+
+    <ul class="links">
+      <li>
+        <span class="label">Email</span>
+        <a href="mailto:addisonsans20@gmail.com">addisonsans20@gmail.com</a>
+      </li>
+      <li>
+        <span class="label">LinkedIn</span>
+        <a
+          href="https://www.linkedin.com/in/addison-sans/"
+          rel="me noopener"
+          target="_blank">linkedin.com/in/addison-sans</
+        >
+      </li>
+      <li>
+        <span class="label">GitHub</span>
+        <a href="https://github.com/addisonsans" rel="me noopener" target="_blank">
+          github.com/addisonsans
+        </a>
+      </li>
+    </ul>
+
+    <hr />
+
+    <p class="meta">
+      I'm currently based in Naples, FL and open to roles in Atlanta or
+      remote.
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .links {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .links li {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .links li:first-child {
+    border-top: 1px solid var(--rule);
+  }
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+  }
+</style>
