@@ -8,8 +8,11 @@ collaborators: ["Brian Odegaard (PI)", "David Rosenthal"]
 tags: ["neuroscience", "eyetracking", "fmri", "metacognition", "multisensory"]
 order: 1
 publications:
-  - citation: "Metacognition and Causal Inference in Audiovisual Speech. Multisensory Research, 2023."
-  - citation: "Forthcoming co-authored paper with David Rosenthal and Brian Odegaard — pending submission."
+  - citation: "Kimmet, F., Pedersen, S., Cardenas, V., Rubiera, C., Johnson, G., Sans, A., Baldwin, M., & Odegaard, B. (2023). Metacognition and Causal Inference in Audiovisual Speech. Multisensory Research, 36(3), 289–311."
+    url: https://pubmed.ncbi.nlm.nih.gov/37080555/
+  - citation: "Manuscript under revision — multisensory behavioral study with collaborators at Lingnan University and the University of Florida."
+    url: https://www.researchgate.net/figure/Behavioral-results-from-participants-at-Lingnan-University-and-the-University-of-Florida_fig1_390091560
+  - citation: "Forthcoming paper (co-authored with David Rosenthal and Brian Odegaard) — pending submission."
 ---
 
 Lab manager at the **Perception, Attention &amp; Consciousness Lab**
